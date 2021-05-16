@@ -2,8 +2,10 @@ from datetime import datetime
 
 import pymysql
 from django.db.models import Q
+from django.db.models.functions import Replace
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 
 from . import models
 # Create your views here.
@@ -360,7 +362,7 @@ def SenderDeleEmail(request):
     try:
         email = models.Email.objects.get(email_id=mailId)
         email.sender_del_flag = 1  # 当前用户为发件人
-        email.sender_del_time = datetime.now()
+        email.sender_del_time = timezone.now()
         email.save()
         return JsonResponse({"message": "邮件已删除", "status": 200})
     except Exception as e:
@@ -374,7 +376,7 @@ def RcverDeleEmail(request):
     try:
         email = models.Email.objects.get(email_id=mailId)
         email.rcver_del_flag = 1  # 当前用户为收件人
-        email.rcver_del_time = datetime.now()
+        email.rcver_del_time = timezone.now()
         email.save()
         return JsonResponse({"message": "邮件已删除", "status": 200})
     except Exception as e:
@@ -399,17 +401,17 @@ def SendEmail(request):
         for i in range(len(rcverEmailList)):  # 检查收件人存在
             rcver = models.User.objects.filter(user_email=rcverEmailList[i])
             if not rcver.exists():
-                return JsonResponse({"message": "有用户不存在，发送失败", "status": 404})
+                return JsonResponse({"message": "有一个或多个收件人不存在，发送失败", "status": 404})
 
         for i in range(len(rcverEmailList)):  # 发邮件
             rcver = models.User.objects.get(user_email=rcverEmailList[i])
-            print(rcver.user_email)
+            cont = Replace(cont, chr(13), "<br>")
             models.Email.objects.create(
                 email_from=user.user_email,
                 email_to=rcver.user_email,
                 email_subject=subject,
                 email_cont=cont,
-                send_time=datetime.now(),
+                send_time=timezone.now(),
                 email_size=len(cont)
             )
         return JsonResponse({"message": "邮件发送成功", "status": 200})
@@ -426,7 +428,7 @@ def CheckMail(request):
         email = models.Email.objects.get(email_id=mailId)
         if authorityNo == 0 and email.rcver_fr_flag == 0:  # 普通用户第一次读取该邮件
             email.rcver_fr_flag = 1
-            email.rcver_fr_time = datetime.now()
+            email.rcver_fr_time = timezone.now()
             email.pop_log = 1  # 加入pop日志
             email.save()
 
