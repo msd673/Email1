@@ -588,3 +588,18 @@ def RecoverDeletedMail(request):
         return JsonResponse({"message": "数据库出错", "status": 404})
 
 
+# 某用户的smtp pop authority权限
+# 参数：userId
+def UserStates(request):
+    userId = request.POST.get('userId',None)
+    try:
+        user = models.User.objects.get(user_id=userId)
+        return JsonResponse({
+            "message": "返回数据成功",
+            "status": 200,
+            'SMTPstate': user.smtp_state,
+            'POP3state': user.pop_state,
+            'authorityNo': user.authorityNo})
+
+    except Exception as e:
+        return JsonResponse({"message": "数据库出错", "status": 404})

@@ -87,7 +87,8 @@ urlpatterns = [
     path('DelePOPLog/', views.DelePOPLog),
 # 后台主页数据
     path('AdminIndexInfo/', views.AdminIndexInfo),
-
+# 某用户的smtp pop authority权限
+    path('UserStates/', views.UserStates),
 
 
 
