@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html class="app-ui">
+
+    <head>
+        <!-- Meta -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+        <!-- Document title -->
+        <title>Tables &ndash; Data tables</title>
+
+        <meta name="description" content="AppUI - Admin Dashboard Template & UI Framework" />
+        <meta name="author" content="rustheme" />
+        <meta name="robots" content="noindex, nofollow" />
+
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" href="../../static/img/favicons/apple-touch-icon.png" />
+        <link rel="icon" href="../../static/img/favicons/favicon.ico" />
+
+        <!-- Google fonts -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,900%7CRoboto+Slab:300,400%7CRoboto+Mono:400" />
+
+        <!-- Page JS Plugins CSS -->
+        <link rel="stylesheet" href="../../static/js/plugins/datatables/jquery.dataTables.min.css" />
+
+        <!-- AppUI CSS stylesheets -->
+        <link rel="stylesheet" id="css-font-awesome" href="../../static/css/font-awesome.css" />
+        <link rel="stylesheet" id="css-ionicons" href="../../static/css/ionicons.css" />
+        <link rel="stylesheet" id="css-bootstrap" href="../../static/css/bootstrap.css" />
+        <link rel="stylesheet" id="css-app" href="../../static/css/app.css" />
+        <link rel="stylesheet" id="css-app-custom" href="../../static/css/app-custom.css" />
+        <!-- End Stylesheets -->
+    </head>
+
+    <body class="app-ui layout-has-drawer layout-has-fixed-header">
+        <div class="app-layout-canvas">
+            <div class="app-layout-container">
+
+                <!-- Drawer -->
+                <aside class="app-layout-drawer">
+
+                    <!-- Drawer scroll area -->
+                    <div class="app-layout-drawer-scroll">
+                        <!-- Drawer logo -->
+                        <div id="logo" class="drawer-header">
+                            <a href="/Index"><img class="img-responsive" src="../../static/img/logo/logo-backend.jpg" title="AppUI" alt="AppUI" /></a>
+                        </div>
+
+                        <!-- Drawer navigation -->
+                        <nav class="drawer-main">
+                            <ul class="nav nav-drawer">
+
+                                <li class="nav-item nav-drawer-header">后台管理</li>
+
+                                <li class="nav-item">
+                                    <a href="/AdminIndex"><i class="ion-ios-speedometer-outline"></i> 后台主页</a>
+                                </li>
+
+                                <!-- <li class="nav-item">
+                                    <a href="frontend_home.html"><i class="ion-ios-monitor-outline"></i> Frontend</a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a href="/UserManage"><i class="ion-ios-calculator-outline"></i> 用户管理</a>
+                                </li>
+
+                                <li class="nav-item nav-item-has-subnav">
+                                    <a href="javascript:void(0)"><i class="ion-ios-compose-outline"></i> 日志管理</a>
+                                    <ul class="nav nav-subnav">
+
+                                        <li>
+                                            <a href="/SMTPLog">SMTP日志</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/POP3Log">POP3日志</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/EmailManage"><i class="ion-ios-email"></i>邮件管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/CreateUser"><i class="ion-ios-personadd-outline"></i>创建用户</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- End drawer navigation -->
+                    </div>
+                    <!-- End drawer scroll area -->
+                </aside>
+                <!-- End drawer -->
+
+                <!-- Header -->
+                <header class="app-layout-header">
+                    <nav class="navbar navbar-default">
+                                <!-- .navbar-left -->
+
+                                <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
+                                    <li class="dropdown">
+                                        <a href="/Index">首页 </a>
+                                    </li>
+            
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0)" data-toggle="dropdown">账户 <span class="caret"></span></a>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>
+                                                <a tabindex="-1" href="/ChangePass"> 修改密码 </a>
+                                            </li>
+                                            <li>
+                                                <a tabindex="-1" id="logout" href="javascript:;"> 退出登录 </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+            
+                                    <li class="dropdown">
+                                        <a href="javascript:void(0)" data-toggle="dropdown">
+                                            <span class="m-r-sm dropdown"> </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- .navbar-right -->
+                            </div>
+                        </div>
+                        <!-- .container-fluid -->
+                    </nav>
+                    <!-- .navbar-default -->
+                </header>
+                <!-- End header -->
+
+
+                <main class="app-layout-content">
+
+                    <!-- Page Content -->
+                    <div class="container-fluid p-y-md">
+                        <!-- Dynamic Table Full -->
+                        <div class="card">
+                            <!-- <div class="card-header">
+                                <h4>Dynamic Table - Full</h4>
+                            </div> -->
+                            <div class="card-block">
+                                <table class="table table-condensed" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 50px;">序号</th>
+                                            <th class="text-center" style="width: 100px;">用户名称</th>
+                                            <th class="text-center hidden-xs w-40">邮箱地址</th>
+                                            <th class="text-center hidden-xs w-15">SMTP状态</th>
+                                            <th class="text-center" style="width: 100px;">POP3状态</th>
+                                            <th class="text-center" style="width: 100px;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userListTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- .card-block -->
+                        </div>
+                        <!-- .card -->
+                        <!-- End Dynamic Table Full -->
+                    </div>
+                    <!-- .container-fluid -->
+                    <!-- End Page Content -->
+
+                    <!-- Pop Out Modal -->
+                    <div class="modal fade" id="modal-popout" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-popout">
+                            <div class="modal-content">
+                                <div class="card-header bg-green bg-inverse">
+                                    <h4>用户设置</h4>
+                                    <ul class="card-actions">
+                                        <li>
+                                            <button data-dismiss="modal" type="button"><i class="ion-close"></i></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="card-block" style="padding-bottom: 120px;" name="card-block">
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="example-select">设置SMTP/POP3启用状态</label>
+                                        <div class="col-sm-9" style="margin-top: 10px;">
+                                            <!-- <P>
+                                            <select class="form-control" id="authselect" name="authselect" size="1">
+                                                <option value="0">普通用户</option>
+                                                <option value="1">管理员</option>
+                                            </select>
+                                            </P> -->
+                                            <p>
+                                                <label class="css-input switch switch-sm switch-primary">
+                                                是否开启SMTP服务 <input id="SMTPoption" type="checkbox" checked /><span></span>
+                                            </label>
+                                            </p>
+                                            <p>
+                                                <label class="css-input switch switch-sm switch-primary">
+                                                是否开启POP3服务 <input id="POP3option" type="checkbox" checked/><span></span>
+                                            </label>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">取消</button>
+                                    <button class="btn btn-sm btn-app" type="button" data-dismiss="modal" onClick='changeState()' ><i class="ion-checkmark"></i>确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Pop Out Modal -->
+
+                    <!-- Slide Up Modal -->
+                    <div class="modal fade" id="modal-slideup" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-slideup">
+                            <div class="modal-content">
+                                <div class="card-header bg-green bg-inverse">
+                                    <h4>提示</h4>
+                                    <ul class="card-actions">
+                                        <li>
+                                            <button data-dismiss="modal" type="button"><i class="ion-close"></i></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-block">
+                                    <p>确定要删除用户？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">取消</button>
+                                    <button class="btn btn-sm btn-app" type="button" data-dismiss="modal" onclick="deleteUser()"><i class="ion-checkmark"></i> 确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Slide Up Modal -->
+                </main>
+
+            </div>
+            <!-- .app-layout-container -->
+        </div>
+        <!-- .app-layout-canvas -->
+
+        <!-- Apps Modal -->
+        <!-- Opens from the button in the header -->
+        <div id="apps-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-sm modal-dialog modal-dialog-top">
+                <div class="modal-content">
+                    <!-- Apps card -->
+                    <div class="card m-b-0">
+                        <div class="card-header bg-app bg-inverse">
+                            <h4>Apps</h4>
+                            <ul class="card-actions">
+                                <li>
+                                    <button data-dismiss="modal" type="button"><i class="ion-close"></i></button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-block">
+                            <div class="row text-center">
+                                <div class="col-xs-6">
+                                    <a class="card card-block m-b-0 bg-app-secondary bg-inverse" href="index.html">
+                                        <i class="ion-speedometer fa-4x"></i>
+                                        <p>Admin</p>
+                                    </a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a class="card card-block m-b-0 bg-app-tertiary bg-inverse" href="frontend_home.html">
+                                        <i class="ion-laptop fa-4x"></i>
+                                        <p>Frontend</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .card-block -->
+                    </div>
+                    <!-- End Apps card -->
+                </div>
+            </div>
+        </div>
+        <!-- End Apps Modal -->
+
+        <div class="app-ui-mask-modal"></div>
+
+        <!-- AppUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock and App.js -->
+        <script src="../../static/js/core/jquery.min.js"></script>
+        <script src="../../static/js/core/bootstrap.min.js"></script>
+        <script src="../../static/js/core/jquery.slimscroll.min.js"></script>
+        <script src="../../static/js/core/jquery.scrollLock.min.js"></script>
+        <script src="../../static/js/core/jquery.placeholder.min.js"></script>
+        <script src="../../static/js/app.js"></script>
+        <script src="../../static/js/app-custom.js"></script>
+
+        <!-- Page JS Plugins -->
+        <script src="../../static/js/plugins/datatables/jquery.dataTables.min.js"></script>
+
+        <!-- Page JS Code -->
+        <script src="../../static/js/pages/base_tables_datatables.js"></script>
+        <script type="text/javascript">
+            var users;
+            var userId;
+            // var name="";
+            $(document).ready(function()
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: '/GetIdentity/',
+                    dateType: "json",
+                    success: function (data){
+                        console.log(data.authorityNo)
+                        if(data.authorityNo!=1){
+                            alert("您无权访问此页面")
+                            window.location.href="/Index";
+                        }
+                    }
+                })
+                $.ajax({
+                    type: 'GET',
+                    url: '/UserList/',
+                    dateType: "json",
+                    success: function (data) {
+                        var list=data.infoList
+                        // users=list
+                        for(var i=0;i<list.length;i++){
+                            // name=list[i].userName;
+                            if(list[i].SMTPstate==1) list[i].SMTPstate="启用"
+                            else if(list[i].SMTPstate==0) list[i].SMTPstate="禁用"
+                            if(list[i].POP3state==1) list[i].POP3state="启用"
+                            else if(list[i].POP3state==0) list[i].POP3state="禁用"
+                            str="<tr><td class=\""+"text-center"+"\">"+(i+1)+
+                                "</td><td class=\""+"text-center"+"\">"+list[i].userName+
+                                "</td><td class=\""+"text-center"+"\">"+list[i].mailAddr+
+                                "</td><td class=\""+"text-center"+"\">"+list[i].SMTPstate+
+                                "</td><td class=\""+"text-center"+"\">"+list[i].POP3state+"</td>"+
+                                "<td  class=\""+"text-center"+"\"><div class=\""+"btn-group"+"\">"+
+                                "<button class=\""+"btn btn-xs btn-default"+"\" type=\""+"button"+"\" data-toggle=\""+"modal"+"\" data-target=\""+"#modal-popout"+"\" title=\""+"Edit Client"+"\" onClick='getForm("+list[i].userId+")'>"
+                                 +"<i class=\""+"ion-edit"+"\" ></i></button>"+
+                                 "<button class=\""+"btn btn-xs btn-default"+"\" type=\""+"button"+"\" data-toggle=\""+"modal"+"\" data-target=\""+"#modal-slideup"+"\" title=\""+"Edit Client"+"\" onClick='getForm("+list[i].userId+")'>"
+                                 +"<i class=\""+"ion-close"+"\"></i></button>"
+                                 +"</div></td></tr>"
+                            $("#userListTable").append(str)
+                        }
+                        // alert(data.message);
+
+                    }
+                })
+            });
+            function getForm(name){
+                console.log("调用了getform"+name);
+                userId=name;
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserStates/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data){
+                        console.log("data.SMTPstate"+data.SMTPstate)
+                        if(data.SMTPstate==1) document.getElementById("SMTPoption").checked=true;
+                        if(data.SMTPstate==0) document.getElementById("SMTPoption").checked=false;
+                        if(data.POP3state==1) document.getElementById("POP3option").checked=true;
+                        if(data.POP3state==0) document.getElementById("POP3option").checked=false;
+                    }
+                })
+            }
+            function changeState(){
+                var op1=SMTPoption.checked;
+                var op2=POP3option.checked;
+                console.log(userId+"的SMTP状态是"+op1)
+                console.log(userId+"的POP3状态是"+op2)
+                if(op1==true){
+                    console.log("选项1开启")
+                    $.ajax({
+                    type: 'POST',
+                    url: '/StartSMTP/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        console.log(data.message);
+                    }
+                })
+                };//开启SMTP
+
+                if(op1==false){
+                    console.log("选项1关闭")
+                    $.ajax({
+                    type: 'POST',
+                    url: '/StopSMTP/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        alert(data.message);
+                    }
+                })
+                };//关闭SMTP
+
+                if(op2==true){
+                    console.log("选项2开启")
+                    $.ajax({
+                    type: 'POST',
+                    url: '/StartPOP3/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        alert(data.message);
+                    }
+                })
+                };//开启POP3
+                if(op2==false){
+                    console.log("选项2关闭")
+                    $.ajax({
+                    type: 'POST',
+                    url: '/StopPOP3/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        alert(data.message);
+                    }
+                })
+                };//关闭POP3
+                location.reload();
+            }
+            function deleteUser(){//删除用户
+                $.ajax({
+                    type: 'POST',
+                    url: '/DeleUser/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        location.reload();
+                        // alert(data.message);
+                    }
+                })
+                
+            }
+            $("#logout").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Logout/',
+                // async: false,
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    alert(data.message);
+                    if (data.status == 200) window.location.href = "/";
+                }
+            })
+        })
+
+        </script>
+
+    </body>
+
+</html>
