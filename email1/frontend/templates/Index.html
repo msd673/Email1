@@ -87,6 +87,9 @@
                         </div>
                         <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
                             <li>
+                                <a href="/AdminIndex" id="showAdminIndex"></a>
+                            </li>
+                            <li>
                                 <a href="/Index">首页 </a>
                             </li>
 
@@ -140,7 +143,7 @@
                     </a>
                 </div>
                 <div class="col-sm-6 col-lg-6">
-                    <a class="card bg-green bg-inverse" href="javascript:void(0)">
+                    <a class="card bg-green bg-inverse" href="/ReceiveEmail">
                         <div class="card-block clearfix">
                             <div class="pull-right">
                                 <p class="h6 text-muted m-t-0 m-b-xs">未读邮件</p>
@@ -229,7 +232,8 @@
                 success: function (data) {
                     if (data.status == 200) {
                         var email = "<" + data.userName + "@skyfall.icu" + ">";
-                        $('#userEmail').text(email)
+                        $('#userEmail').text(email);
+                        if(data.authorityNo==1) $('#showAdminIndex').text("进入后台");
                     }
                 }
             })

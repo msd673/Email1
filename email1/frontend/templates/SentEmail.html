@@ -83,6 +83,9 @@
                         </div>
                         <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
                             <li>
+                                <a href="/AdminIndex" id="showAdminIndex"></a>
+                            </li>
+                            <li>
                                 <a href="/Index">首页 </a>
                             </li>
 
@@ -258,6 +261,7 @@
                 success: function (data) {
                     var email = "<" + data.userName + "@skyfall.icu" + ">";
                     $('#userEmail').text(email);
+                    if (data.authorityNo == 1) $('#showAdminIndex').text("进入后台");
                 }
             })
             $.ajax({
@@ -296,7 +300,7 @@
             return datetime
         }
         function getForm(id) {
-            emailId=id;
+            emailId = id;
             getEmail();
         }
         function getEmail() {
@@ -317,7 +321,7 @@
                 }
             })
         }
-        $("#delEmail").click(function() {
+        $("#delEmail").click(function () {
             $.ajax({
                 type: 'POST',
                 url: '/SenderDeleEmail/',

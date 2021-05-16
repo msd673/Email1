@@ -83,6 +83,9 @@
                         </div>
                         <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
                             <li>
+                                <a href="/AdminIndex" id="showAdminIndex"></a>
+                            </li>
+                            <li>
                                 <a href="/Index">首页 </a>
                             </li>
 
@@ -239,7 +242,8 @@
                 success: function (data) {
                     if (data.status == 200) {
                         var email = "<" + data.userName + "@skyfall.icu" + ">";
-                        $('#userEmail').text(email)
+                        $('#userEmail').text(email);
+                        if(data.authorityNo==1) $('#showAdminIndex').text("进入后台");
                     }
                 }
             })
@@ -258,8 +262,8 @@
             var text = document.getElementById("text").value;
             if (receiver == "" || subject == "" || text == "") alert("请将表单填写完整！")
             else {
-                var arr = receiver.split(";");
-                alert(receiver);
+                // var arr = receiver.split(";");
+                // alert(text);
                 $.ajax({
                     type: 'POST',
                     url: '/SendEmail/',
