@@ -126,13 +126,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # 时差 语言 中文是zh-Hans
 LANGUAGE_CODE = 'en-us'
 # 时区 Asia/Shanghai
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
