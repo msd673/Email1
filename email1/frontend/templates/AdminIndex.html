@@ -139,7 +139,7 @@
                                     <div class="card-block clearfix">
                                         <div class="pull-right">
                                             <p class="h6 text-muted m-t-0 m-b-xs">SMTP日志</p>
-                                            <p class="h3 text-blue m-t-sm m-b-0" id="SMTPcnt">$120.9k</p>
+                                            <p class="h3 text-blue m-t-sm m-b-0" id="SMTPcnt"></p>
                                         </div>
                                         <div class="pull-left m-r">
                                             <span class="img-avatar img-avatar-48 bg-blue bg-inverse"><i class="ion-ios-bell fa-1-5x"></i></span>
@@ -154,7 +154,7 @@
                                     <div class="card-block clearfix">
                                         <div class="pull-right">
                                             <p class="h6 text-muted m-t-0 m-b-xs">POP3日志</p>
-                                            <p class="h3 m-t-sm m-b-0" id="POP3cnt">$340.5k</p>
+                                            <p class="h3 m-t-sm m-b-0" id="POP3cnt"></p>
                                         </div>
                                         <div class="pull-left m-r">
                                             <span class="img-avatar img-avatar-48 bg-gray-light-o"><i class="ion-ios-speedometer fa-1-5x"></i></span>
@@ -204,7 +204,7 @@
                                 <div class="card">
                                     <div class="card-block">
                                         <h4>近期日志</h4>
-                                        <table class="table table-condensed" style="width: 600px; margin-top: 50px; font-size: 20px;">
+                                        <table class="table table-condensed" style="width: 900px; margin-top: 50px; font-size: 20px;">
                                             <thead>
                                                 <tr>
                                                 </tr>
@@ -240,16 +240,6 @@
         <script src="../../static/js/app.js"></script>
         <script src="../../static/js/app-custom.js"></script>
 
-        <!-- Page Plugins -->
-        <!-- <script src="../../static/js/plugins/slick/slick.min.js"></script>
-        <script src="../../static/js/plugins/chartjs/Chart.min.js"></script>
-        <script src="../../static/js/plugins/flot/jquery.flot.min.js"></script>
-        <script src="../../static/js/plugins/flot/jquery.flot.pie.min.js"></script>
-        <script src="../../static/js/plugins/flot/jquery.flot.stack.min.js"></script>
-        <script src="../../static/js/plugins/flot/jquery.flot.resize.min.js"></script> -->
-
-        <!-- Page JS Code -->
-        <!-- <script src="../../static/js/pages/index.js"></script> -->
         <script>
             $(document).ready(function(){
                 $.ajax({
@@ -287,11 +277,11 @@
                 })
                 $.ajax({
                     type:'GET',
-                    url:'/IndexInfo',
+                    url:'/AdminIndexInfo',
                     dateType:"json",
                     success:function(data){
-                        var SMTPcnt=data.sendEmailCnt
-                        var POP3cnt=data.rcvEmailCnt
+                        var SMTPcnt=data.smtpLogCnt
+                        var POP3cnt=data.popLogCnt
                         $("#SMTPcnt").html(SMTPcnt)
                         $("#POP3cnt").html(POP3cnt)
                     }

@@ -220,12 +220,26 @@
                             csrfmiddlewaretoken:'{{ csrf_token }}'
                         },
                         success: function (data) {
-                            alert.success(data.message);
+                            alert(data.message);
                             if(data.message=="注册成功") window.location.href="/AdminIndex";
                         }
                     })
                 }
                 
+            })
+            $("#logout").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Logout/',
+                    // async: false,
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        alert(data.message);
+                        if (data.status == 200) window.location.href = "/";
+                    }
+                })
             })
         </script>
     </body>

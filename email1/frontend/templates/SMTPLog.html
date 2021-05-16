@@ -139,7 +139,7 @@
                             <div class="card-block">
                                 <h3>SMTP日志列表</h3>
                                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/base_tables_datatables.js -->
-                                <table class="table table-condensed" style="width: 600px; margin-top: 50px; font-size: 20px;">
+                                <table class="table table-condensed" style="width: 900px; margin-top: 50px; font-size: 20px;">
                                     <thead>
                                         <tr>
                                         </tr>
@@ -252,7 +252,7 @@
                             mailid=list[i].emailId
                             var sendTime=timeFormatter(list[i].sendTime)
                             console.log(sendTime);
-                            str="<tr><td class=\""+"text-center"+"\" align=\""+"left"+"\" valign=\""+"middle"+"\">"
+                            str="<tr><td style=\""+"width:100%;"+"\" class=\""+"text-left"+"\" align=\""+"left"+"\" valign=\""+"middle"+"\">"
                                 +sendTime+"："+list[i].fromAddr+"向"+list[i].toAddr+"发送了一封邮件</td>"+
                                 "<td class=\""+"text-center"+"\"><div class=\""+"btn-group"+"\">"+
                                  "<button class=\""+"btn btn-xs btn-default"+"\" type=\""+"button"+"\" data-toggle=\""+"modal"+"\" data-target=\""+"#modal-slideup"+"\" title=\""+"Edit Client"+"\" onClick='getForm("+list[i].emailId+")'>"

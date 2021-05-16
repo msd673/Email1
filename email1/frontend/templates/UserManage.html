@@ -176,16 +176,17 @@
                                     </ul>
                                 </div>
                                 
-                                <div class="card-block" style="padding-bottom: 120px;" name="card-block">
+                                <div class="card-block" style="padding-bottom: 150px;" name="card-block">
                                     <div class="form-group">
-                                        <label class="col-xs-12" for="example-select">设置SMTP/POP3启用状态</label>
-                                        <div class="col-sm-9" style="margin-top: 10px;">
-                                            <!-- <P>
-                                            <select class="form-control" id="authselect" name="authselect" size="1">
+                                        <P><label class="col-xs-12" style="margin-top: 20px;">设置用户权限态</label>
+                                            <select class="form-control" id="authselect" name="authselect"  style="margin-bottom: 40px;" size="1">
                                                 <option value="0">普通用户</option>
                                                 <option value="1">管理员</option>
                                             </select>
-                                            </P> -->
+                                        </P>
+                                        <label class="col-xs-12" for="example-select">设置SMTP/POP3启用状态</label>
+                                        <div class="col-sm-9" style="margin-top: 10px;">
+                                            
                                             <p>
                                                 <label class="css-input switch switch-sm switch-primary">
                                                 是否开启SMTP服务 <input id="SMTPoption" type="checkbox" checked /><span></span>
@@ -316,6 +317,7 @@
                     url: '/UserList/',
                     dateType: "json",
                     success: function (data) {
+                        console.log("1")
                         var list=data.infoList
                         // users=list
                         for(var i=0;i<list.length;i++){
@@ -355,6 +357,8 @@
                     },
                     success: function (data){
                         console.log("data.SMTPstate"+data.SMTPstate)
+                        if(data.authorityNo==0) document.getElementById("authselect").value="0";
+                        else if(data.authorityNo==1) document.getElementById("authselect").value="1";
                         if(data.SMTPstate==1) document.getElementById("SMTPoption").checked=true;
                         if(data.SMTPstate==0) document.getElementById("SMTPoption").checked=false;
                         if(data.POP3state==1) document.getElementById("POP3option").checked=true;
@@ -362,9 +366,40 @@
                     }
                 })
             }
+
             function changeState(){
+                var auth=authselect.value;
                 var op1=SMTPoption.checked;
                 var op2=POP3option.checked;
+                alert(auth)
+                if(auth==0){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/SetAsUser/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        // console.log(data.message);
+                    }
+                })
+                }
+                else if(auth==1){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/SetAsManager/',
+                    dateType: "json",
+                    data: {
+                        userId:userId,
+                        csrfmiddlewaretoken:'{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        // console.log(data.message);
+                    }
+                })
+                }
                 console.log(userId+"的SMTP状态是"+op1)
                 console.log(userId+"的POP3状态是"+op2)
                 if(op1==true){
@@ -378,7 +413,7 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        console.log(data.message);
+                        // console.log(data.message);
                     }
                 })
                 };//开启SMTP
@@ -394,7 +429,7 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        alert(data.message);
+                        // alert(data.message);
                     }
                 })
                 };//关闭SMTP
@@ -410,7 +445,7 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        alert(data.message);
+                        // alert(data.message);
                     }
                 })
                 };//开启POP3
@@ -425,7 +460,7 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        alert(data.message);
+                        // alert(data.message);
                     }
                 })
                 };//关闭POP3

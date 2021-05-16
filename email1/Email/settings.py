@@ -91,11 +91,11 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',    # 数据库引擎
-        'NAME': 'maildb1',  # 数据库名称
+        'NAME': 'maildb',  # 数据库名称
         'HOST': '127.0.0.1',  # 数据库地址，本机 ip 地址 127.0.0.1
         'PORT': 3306,  # 端口
-        'USER': 'db',  # 数据库用户
-        'PASSWORD': '123456',  # 数据库密码
+        'USER': 'root',  # 数据库用户
+        'PASSWORD': 'xxsql',  # 数据库密码
     }
 }
 
