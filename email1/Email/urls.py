@@ -31,6 +31,8 @@ urlpatterns = [
     path('ReceiveEmail/', views.ReceiveEmail),
 # 已发送页面
     path('SentEmail/', views.SentEmail),
+# 回收站页面
+    path('DeledEmail/', views.DeledEmail),
 # 修改密码页面
     path('ChangePass/', views.ChangePass),
 # 用户管理页面
@@ -112,6 +114,7 @@ urlpatterns = [
     path('DeletedMailList/', views.DeletedMailList),
 # 恢复已删除邮件
     path('RecoverDeletedMail/', views.RecoverDeletedMail),
-
+# 彻底删除已删除邮件
+    path('CompleDelMail/', views.CompleDelMail),
 
 ]

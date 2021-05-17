@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
         <!-- Document title -->
-        <title>Tables &ndash; Data tables</title>
+        <title>用户管理</title>
 
         <meta name="description" content="AppUI - Admin Dashboard Template & UI Framework" />
         <meta name="author" content="rustheme" />
@@ -95,33 +95,36 @@
                 <!-- Header -->
                 <header class="app-layout-header">
                     <nav class="navbar navbar-default">
-                                <!-- .navbar-left -->
-
-                                <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
-                                    <li class="dropdown">
-                                        <a href="/Index">首页 </a>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0)" data-toggle="dropdown">账户 <span class="caret"></span></a>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            <li>
-                                                <a tabindex="-1" href="/ChangePass"> 修改密码 </a>
-                                            </li>
-                                            <li>
-                                                <a tabindex="-1" id="logout" href="javascript:;"> 退出登录 </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-            
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0)" data-toggle="dropdown">
-                                            <span class="m-r-sm dropdown"> </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <!-- .navbar-right -->
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <span class="navbar-page-title" id="userEmail">
+                                </span>
                             </div>
+                            <!-- .navbar-left -->
+                            <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
+                                <li class="dropdown">
+                                    <a href="/Index">首页 </a>
+                                </li>
+    
+                                <li class="dropdown">
+                                    <a href="javascript:void(0)" data-toggle="dropdown">账户 <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a tabindex="-1" href="/ChangePass"> 修改密码 </a>
+                                        </li>
+                                        <li>
+                                            <a tabindex="-1" id="logout" href="javascript:;"> 退出登录 </a>
+                                        </li>
+                                    </ul>
+                                </li>
+    
+                                <li class="dropdown">
+                                    <a href="javascript:void(0)" data-toggle="dropdown">
+                                        <span class="m-r-sm dropdown"> </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- .navbar-right -->
                         </div>
                         <!-- .container-fluid -->
                     </nav>
@@ -148,6 +151,7 @@
                                             <th class="text-center hidden-xs w-40">邮箱地址</th>
                                             <th class="text-center hidden-xs w-15">SMTP状态</th>
                                             <th class="text-center" style="width: 100px;">POP3状态</th>
+                                            <th class="text-center" style="width: 100px;">权限</th>
                                             <th class="text-center" style="width: 100px;">操作</th>
                                         </tr>
                                     </thead>
@@ -178,7 +182,7 @@
                                 
                                 <div class="card-block" style="padding-bottom: 150px;" name="card-block">
                                     <div class="form-group">
-                                        <P><label class="col-xs-12" style="margin-top: 20px;">设置用户权限态</label>
+                                        <P><label class="col-xs-12" style="margin-top: 20px;">设置用户权限</label>
                                             <select class="form-control" id="authselect" name="authselect"  style="margin-bottom: 40px;" size="1">
                                                 <option value="0">普通用户</option>
                                                 <option value="1">管理员</option>
@@ -239,45 +243,6 @@
         </div>
         <!-- .app-layout-canvas -->
 
-        <!-- Apps Modal -->
-        <!-- Opens from the button in the header -->
-        <div id="apps-modal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-sm modal-dialog modal-dialog-top">
-                <div class="modal-content">
-                    <!-- Apps card -->
-                    <div class="card m-b-0">
-                        <div class="card-header bg-app bg-inverse">
-                            <h4>Apps</h4>
-                            <ul class="card-actions">
-                                <li>
-                                    <button data-dismiss="modal" type="button"><i class="ion-close"></i></button>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-block">
-                            <div class="row text-center">
-                                <div class="col-xs-6">
-                                    <a class="card card-block m-b-0 bg-app-secondary bg-inverse" href="index.html">
-                                        <i class="ion-speedometer fa-4x"></i>
-                                        <p>Admin</p>
-                                    </a>
-                                </div>
-                                <div class="col-xs-6">
-                                    <a class="card card-block m-b-0 bg-app-tertiary bg-inverse" href="frontend_home.html">
-                                        <i class="ion-laptop fa-4x"></i>
-                                        <p>Frontend</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- .card-block -->
-                    </div>
-                    <!-- End Apps card -->
-                </div>
-            </div>
-        </div>
-        <!-- End Apps Modal -->
-
         <div class="app-ui-mask-modal"></div>
 
         <!-- AppUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock and App.js -->
@@ -310,6 +275,10 @@
                             alert("您无权访问此页面")
                             window.location.href="/Index";
                         }
+                        if (data.status == 200) {
+                        var email = "<" + data.userName + "@skyfall.icu" + ">";
+                        $('#userEmail').text(email)
+                        }
                     }
                 })
                 $.ajax({
@@ -322,15 +291,19 @@
                         // users=list
                         for(var i=0;i<list.length;i++){
                             // name=list[i].userName;
+                            var auth
                             if(list[i].SMTPstate==1) list[i].SMTPstate="启用"
                             else if(list[i].SMTPstate==0) list[i].SMTPstate="禁用"
                             if(list[i].POP3state==1) list[i].POP3state="启用"
                             else if(list[i].POP3state==0) list[i].POP3state="禁用"
+                            if(list[i].authorityNo==0) auth="普通用户"
+                            else if(list[i].authorityNo==1) auth="管理员"
                             str="<tr><td class=\""+"text-center"+"\">"+(i+1)+
                                 "</td><td class=\""+"text-center"+"\">"+list[i].userName+
                                 "</td><td class=\""+"text-center"+"\">"+list[i].mailAddr+
                                 "</td><td class=\""+"text-center"+"\">"+list[i].SMTPstate+
-                                "</td><td class=\""+"text-center"+"\">"+list[i].POP3state+"</td>"+
+                                "</td><td class=\""+"text-center"+"\">"+list[i].POP3state+
+                                "</td><td class=\""+"text-center"+"\">"+auth+"</td>"+
                                 "<td  class=\""+"text-center"+"\"><div class=\""+"btn-group"+"\">"+
                                 "<button class=\""+"btn btn-xs btn-default"+"\" type=\""+"button"+"\" data-toggle=\""+"modal"+"\" data-target=\""+"#modal-popout"+"\" title=\""+"Edit Client"+"\" onClick='getForm("+list[i].userId+")'>"
                                  +"<i class=\""+"ion-edit"+"\" ></i></button>"+
@@ -339,8 +312,6 @@
                                  +"</div></td></tr>"
                             $("#userListTable").append(str)
                         }
-                        // alert(data.message);
-
                     }
                 })
             });
@@ -371,7 +342,6 @@
                 var auth=authselect.value;
                 var op1=SMTPoption.checked;
                 var op2=POP3option.checked;
-                alert(auth)
                 if(auth==0){
                     $.ajax({
                     type: 'POST',
@@ -382,7 +352,6 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        // console.log(data.message);
                     }
                 })
                 }
@@ -396,7 +365,6 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        // console.log(data.message);
                     }
                 })
                 }
@@ -413,7 +381,6 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        // console.log(data.message);
                     }
                 })
                 };//开启SMTP
@@ -429,7 +396,6 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        // alert(data.message);
                     }
                 })
                 };//关闭SMTP
@@ -445,7 +411,6 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        // alert(data.message);
                     }
                 })
                 };//开启POP3
@@ -460,7 +425,6 @@
                         csrfmiddlewaretoken:'{{ csrf_token }}'
                     },
                     success: function (data) {
-                        // alert(data.message);
                     }
                 })
                 };//关闭POP3
@@ -477,7 +441,6 @@
                     },
                     success: function (data) {
                         location.reload();
-                        // alert(data.message);
                     }
                 })
                 

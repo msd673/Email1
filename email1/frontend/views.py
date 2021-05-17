@@ -2,10 +2,8 @@ from datetime import datetime
 
 import pymysql
 from django.db.models import Q
-from django.db.models.functions import Replace
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.utils import timezone
 
 from . import models
 # Create your views here.
@@ -33,6 +31,10 @@ def ReceiveEmail(request):
 # 已发送页面
 def SentEmail(request):
     return render(request,'SentEmail.html')
+    
+# 回收站页面
+def DeledEmail(request):
+    return render(request,'DeledEmail.html')
 
 # 修改密码页面
 def ChangePass(request):
@@ -362,7 +364,7 @@ def SenderDeleEmail(request):
     try:
         email = models.Email.objects.get(email_id=mailId)
         email.sender_del_flag = 1  # 当前用户为发件人
-        email.sender_del_time = timezone.now()
+        email.sender_del_time = datetime.now()
         email.save()
         return JsonResponse({"message": "邮件已删除", "status": 200})
     except Exception as e:
@@ -376,7 +378,7 @@ def RcverDeleEmail(request):
     try:
         email = models.Email.objects.get(email_id=mailId)
         email.rcver_del_flag = 1  # 当前用户为收件人
-        email.rcver_del_time = timezone.now()
+        email.rcver_del_time = datetime.now()
         email.save()
         return JsonResponse({"message": "邮件已删除", "status": 200})
     except Exception as e:
@@ -392,6 +394,9 @@ def SendEmail(request):
     rcverEmailList.pop()
     subject = request.POST.get("subject", None)
     cont = request.POST.get('cont',None)
+    print('cont1: ', cont)
+    cont = cont.replace('\n', '<br/>')
+    print('cont2: ', cont)
     userId = request.session.get('userId')
     try:
         user = models.User.objects.get(user_id=userId)
@@ -401,17 +406,17 @@ def SendEmail(request):
         for i in range(len(rcverEmailList)):  # 检查收件人存在
             rcver = models.User.objects.filter(user_email=rcverEmailList[i])
             if not rcver.exists():
-                return JsonResponse({"message": "有一个或多个收件人不存在，发送失败", "status": 404})
+                return JsonResponse({"message": "有用户不存在，发送失败", "status": 404})
 
         for i in range(len(rcverEmailList)):  # 发邮件
             rcver = models.User.objects.get(user_email=rcverEmailList[i])
-            cont = Replace(cont, chr(13), "<br>")
+            print(rcver.user_email)
             models.Email.objects.create(
                 email_from=user.user_email,
                 email_to=rcver.user_email,
                 email_subject=subject,
                 email_cont=cont,
-                send_time=timezone.now(),
+                send_time=datetime.now(),
                 email_size=len(cont)
             )
         return JsonResponse({"message": "邮件发送成功", "status": 200})
@@ -424,11 +429,13 @@ def SendEmail(request):
 def CheckMail(request):
     mailId = request.POST.get('mailId',None)
     authorityNo = request.session.get('userAuthority',None)
+    userId = request.session.get('userId', None)
     try:
         email = models.Email.objects.get(email_id=mailId)
-        if authorityNo == 0 and email.rcver_fr_flag == 0:  # 普通用户第一次读取该邮件
+        userEmail = models.Email.objects.get(user_id=userId).user_email
+        if email.email_to == userEmail and authorityNo == 0 and email.rcver_fr_flag == 0:  # 普通用户收件人第一次读取该邮件
             email.rcver_fr_flag = 1
-            email.rcver_fr_time = timezone.now()
+            email.rcver_fr_time = datetime.now()
             email.pop_log = 1  # 加入pop日志
             email.save()
 
@@ -533,7 +540,7 @@ def IndexInfo(request):
         rcvEmailCnt = models.Email.objects.filter(email_to=userEmail, rcver_del_flag=0).count()
         yetReadCnt = models.Email.objects.filter(email_to=userEmail, rcver_del_flag=0, rcver_fr_flag=0).count()
         sendEmailCnt = models.Email.objects.filter(email_from=userEmail, sender_del_flag=0).count()
-        deletedEmailCnt = models.Email.objects.filter(Q(email_to=userEmail, rcver_del_flag=1) | Q(email_from=userEmail, sender_del_flag=1)).count()
+        deletedEmailCnt = models.Email.objects.filter(Q(email_to=userEmail, rcver_del_flag=1, rcver_comdel_flag=0) | Q(email_from=userEmail, sender_del_flag=1, sender_comdel_flag=0)).count()
         return JsonResponse({
             "message": "返回数据成功",
             "status": 200,
@@ -553,7 +560,7 @@ def DeletedMailList(request):
     try:
         userEmail = models.User.objects.get(user_id=userId).user_email
         infoList = []
-        emails = models.Email.objects.filter(Q(email_to=userEmail, rcver_del_flag=1) | Q(email_from=userEmail, sender_del_flag=1))
+        emails = models.Email.objects.filter(Q(email_to=userEmail, rcver_del_flag=1, rcver_comdel_flag=0) | Q(email_from=userEmail, sender_del_flag=1, sender_comdel_flag=0))
         for email in emails:
             infoList.append({'emailId': email.email_id,
                              'emailFrom': email.email_from,
@@ -586,6 +593,24 @@ def RecoverDeletedMail(request):
         email.save()
         return JsonResponse({"message": "邮件已恢复", "status": 200})
 
+    except Exception as e:
+        return JsonResponse({"message": "数据库出错", "status": 404})
+
+
+# 彻底删除已删除邮件
+def CompleDelMail(request):
+    emailId = request.POST.get("mailId")
+    userId = request.session.get('userId')
+    try:
+        email = models.Email.objects.get(email_id=emailId)
+        userEmail = models.User.objects.get(user_id=userId).user_email
+        if email.email_to == userEmail:  # 当前用户为收件人
+            email.rcver_comdel_flag = 1
+        else:                            # 当前用户为发件人
+            email.sender_comdel_flag = 1
+
+        email.save()
+        return JsonResponse({"message": "邮件已彻底删除", "status": 200})
     except Exception as e:
         return JsonResponse({"message": "数据库出错", "status": 404})
 

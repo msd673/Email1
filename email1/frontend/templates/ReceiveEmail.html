@@ -54,15 +54,19 @@
                             <li class="nav-item nav-drawer-header">菜单</li>
 
                             <li class="nav-item nav-item-has-subnav">
-                                <a href="/WriteEmail"><i class="ion-ios-calculator-outline"></i> 写邮件</a>
+                                <a href="/WriteEmail"><i class="ion-ios-compose-outline"></i> 写邮件</a>
                             </li>
 
-                            <li class="nav-item nav-item-has-subnav" style="background-color:rgb(125, 200, 85);">
-                                <a href="javascript:void(0)"><i class="ion-ios-compose-outline"></i> 收件箱</a>
+                            <li class="nav-item nav-item-has-subnav"  style="background-color:rgb(125, 200, 85);">
+                                <a href="/ReceiveEmail"><i class="ion-ios-calculator-outline"></i> 收件箱</a>
                             </li>
 
                             <li class="nav-item nav-item-has-subnav">
                                 <a href="/SentEmail"><i class="ion-ios-list-outline"></i> 已发送</a>
+                            </li>
+
+                            <li class="nav-item nav-item-has-subnav">
+                                <a href="/DeledEmail"><i class="fa fa-trash-o"></i> 回收站</a>
                             </li>
 
                         </ul>
@@ -310,9 +314,9 @@
                     "</td><td class=\"text-center hidden-xs\">" + infoList[i].emailSubject +
                     "</td><td class=\"text-center hidden-xs\">" + sendTime +
                     "</td><td  class=\"text-center\"><div class=\"btn-group\">" +
-                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-popout\" title=\"Edit Client\" onClick='getForm(" + infoList[i].emailId + ")'>"
+                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-popout\" title=\"Edit Client\" onClick='getEmail(" + infoList[i].emailId + ")'>"
                     + "<i class=\"fa fa-search-plus\" ></i></button>" +
-                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-slideup\" title=\"Edit Client\" onClick='getForm(" + infoList[i].emailId + ")'>"
+                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-slideup\" title=\"Edit Client\" onClick='delEmail(" + infoList[i].emailId + ")'>"
                     + "<i class=\"ion-close\"></i></button>"
                     + "</div></td></tr>"
                 $("#RcvEmail").append(str)
@@ -321,13 +325,24 @@
         function timeFormatter(value) {
             console.log(value)
             var datetime = value.replace("T", " ").replace("Z", "")
-            return datetime
+            datetime=datetime.slice(0,datetime.indexOf("."));
+            var time1 = datetime.split(' ')[0];
+            // console.log("1、第二种方式time1:" + time1)
+            var arrTime = datetime.split(' ')[1].split(':');
+            // console.log("2、第二种方式arrTime:" + arrTime)
+            var time2 = arrTime.slice(1, arrTime.length).join(':');
+            // console.log("3、第二种方式time2:" + time2)
+            var h = parseInt(arrTime[0]) + 8;
+            // console.log('4、第二种方式小时：', h);
+            var newH = ((h < 24) ? h : (h % 24)).toString();
+            return time1 + ' ' + newH + ':' + time2;
+            // return date
         }
-        function getForm(id) {
+        function delEmail(id) {
             emailId = id;
-            getEmail();
         }
-        function getEmail() {
+        function getEmail(id) {
+            emailId = id;
             $.ajax({
                 type: 'POST',
                 url: '/CheckMail/',
@@ -337,10 +352,16 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 success: function (data) {
+                    str=data.info['emailCont'];
+                    str=str.split("<br/>"); 
                     if (data.status == 200) {
                         $("#showEmailFrom").text(data.info['fromAddr'])
                         $("#showEmailSubject").text(data.info['emailSubject'])
-                        $("#showEmailContext").text(data.info['emailCont'])
+                        $("#showEmailContext").text("")
+                        for(var i=0;i<str.length;i++) {
+                            var s=str[i]+"<br />";
+                            $("#showEmailContext").append(s);
+                        }
                     }
                 }
             })

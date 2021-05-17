@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
     <!-- Document title -->
-    <title>已发送</title>
+    <title>回收站</title>
 
     <meta name="description" content="AppUI - Admin Dashboard Template & UI Framework" />
     <meta name="author" content="rustheme" />
@@ -60,12 +60,13 @@
                             <li class="nav-item nav-item-has-subnav">
                                 <a href="/ReceiveEmail"><i class="ion-ios-calculator-outline"></i> 收件箱</a>
                             </li>
+                            
 
-                            <li class="nav-item nav-item-has-subnav" style="background-color:rgb(125, 200, 85);">
-                                <a href="javascript:void(0)"><i class="ion-ios-list-outline"></i> 已发送</a>
+                            <li class="nav-item nav-item-has-subnav">
+                                <a href="/SentEmail"><i class="ion-ios-list-outline"></i> 已发送</a>
                             </li>
                             
-                            <li class="nav-item nav-item-has-subnav">
+                            <li class="nav-item nav-item-has-subnav" style="background-color:rgb(125, 200, 85);">
                                 <a href="/DeledEmail"><i class="fa fa-trash-o"></i> 回收站</a>
                             </li>
 
@@ -132,20 +133,40 @@
                     <!-- Condensed Table -->
                     <div class="card">
                         <div class="card-header">
-                            <h4>已发送</h4>
+                            <h4>回收站</h4>
                         </div>
                         <div class="card-block">
                             <table class="table table-condensed">
                                 <thead>
                                     <tr>
-                                        <th class="text-center hidden-xs w-10">#</th>
+                                        <th class="text-center hidden-xs w-5">#</th>
+                                        <th class="text-center hidden-xs w-20">发件人</th>
                                         <th class="text-center hidden-xs w-20">收件人</th>
-                                        <th class="text-center hidden-xs w-35">主题</th>
-                                        <th class="text-center hidden-xs w-20">时间</th>
+                                        <th class="text-center hidden-xs w-20">主题</th>
+                                        <th class="text-center hidden-xs w-15">时间</th>
                                         <th class="text-center" style="width: 100px;">动作</th>
                                     </tr>
                                 </thead>
-                                <tbody id="SendList">
+                                <tbody id="RecycleEmail">
+                                    <!-- <tr>
+                                        <td class="text-center" id="showId">1</td>
+                                        <td class="text-center"><i class="ion-android-drafts"></i></td>
+                                        <td class="text-center" id="showEmailFrom">12</td>
+                                        <td class="text-center hidden-xs" id="showEmailSubject">12</td>
+                                        <td class="text-center hidden-xs" id="showSendTime"></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-xs btn-default" type="button"
+                                                    data-toggle="tooltip" title="Remove client" onclick="getForm()"><i
+                                                        class="fa fa-search-plus"></i></button>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button class="btn btn-xs btn-default" type="button"
+                                                    data-toggle="tooltip" title="Remove client" onclick="getForm()"><i
+                                                        class="ion-close"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
@@ -161,56 +182,28 @@
         <!-- .container-fluid -->
         <!-- End Page Content -->
 
-        <!-- Pop Out Modal -->
-        <div class="modal fade" id="modal-popout" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-popout">
+        <!-- Slide Up Modal -->
+        <div class="modal fade" id="modal-reply" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-reply">
                 <div class="modal-content">
                     <div class="card-header bg-green bg-inverse">
-                        <h4>邮箱详细</h4>
+                        <h4>提示</h4>
                         <ul class="card-actions">
                             <li>
                                 <button data-dismiss="modal" type="button"><i class="ion-close"></i></button>
                             </li>
                         </ul>
                     </div>
-
-                    <div class="card-block" style="padding-bottom: 60px;" name="card-block" id="showEmail">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="h5 m-b-xs">
-                                    <a href="javascript:void(0)">收件人</a>
-                                </h3>
-                                <p id="showEmailTo">
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="h5 m-b-xs">
-                                    <a href="javascript:void(0)">主题</a>
-                                </h3>
-                                <p id="showEmailSubject">
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="h5 m-b-xs">
-                                    <a href="javascript:void(0)">内容</a>
-                                </h3>
-                                <p id="showEmailContext">
-                                </p>
-                            </div>
-                        </div>
+                    <div class="card-block">
+                        <p>确定要恢复邮件？</p>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-sm btn-app" type="button" data-dismiss="modal">关闭</button>
+                        <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">取消</button>
+                        <button class="btn btn-sm btn-app" type="button" data-dismiss="modal" id="replyEmail">确定</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End Pop Out Modal -->
-
         <!-- Slide Up Modal -->
         <div class="modal fade" id="modal-slideup" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-slideup">
@@ -239,7 +232,6 @@
 
     </div>
     <!-- .app-layout-container -->
-
     </div>
     <!-- .app-layout-canvas -->
 
@@ -270,7 +262,7 @@
             })
             $.ajax({
                 type: 'GET',
-                url: '/SendList',
+                url: '/DeletedMailList',
                 // async: false,
                 dateType: "json",
                 success: function (data) {
@@ -281,21 +273,24 @@
         function showTable(infoList) {
             for (var i = 0; i < infoList.length; i++) {
                 // document.getElementById("showId").innerHTML = i + 1;
-                // document.getElementById("showEmailFrom").innerHTML = infoList[i].emailTo;
+                // document.getElementById("showEmailFrom").innerHTML = infoList[i].emailFrom;
                 // document.getElementById("showEmailSubject").innerHTML = infoList[i].emailSubject;
                 // document.getElementById("showSendTime").innerHTML = infoList[i].sendTime;
+                // time = datetime.strptime(infoList[i].sendTime, '%Y-%m-%d %H:%M:%S')
+                var state;
                 var sendTime = timeFormatter(infoList[i].sendTime)
                 var str = "<tr><td class=\"text-center\">" + (i + 1) +
+                    "</td><td class=\"text-center\">" + infoList[i].emailFrom +
                     "</td><td class=\"text-center\">" + infoList[i].emailTo +
-                    "</td><td class=\"text-center hidden-xs\">" + infoList[i].emailSubject +
+                    "</td><td class=\"text-center hidden-xs\">" + infoList[i].subject +
                     "</td><td class=\"text-center hidden-xs\">" + sendTime +
                     "</td><td  class=\"text-center\"><div class=\"btn-group\">" +
-                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-popout\" title=\"Edit Client\" onClick='getEmail(" + infoList[i].emailId + ")'>"
-                    + "<i class=\"fa fa-search-plus\" ></i></button>" +
-                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-slideup\" title=\"Edit Client\" onClick='delEmail(" + infoList[i].emailId + ")'>"
-                    + "<i class=\"ion-close\"></i></button>"
+                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-reply\" title=\"Edit Client\" onClick='getForm(" + infoList[i].emailId + ")'>"
+                    + "恢复邮件</button>" +
+                    "<button class=\"btn btn-xs btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#modal-slideup\" title=\"Edit Client\" onClick='getForm(" + infoList[i].emailId + ")'>"
+                    + "彻底删除</button>"
                     + "</div></td></tr>"
-                $("#SendList").append(str)
+                $("#RecycleEmail").append(str)
             }
         };
         function timeFormatter(value) {
@@ -314,41 +309,16 @@
             return time1 + ' ' + newH + ':' + time2;
             // return date
         }
-        function delEmail(id) {
+        function getForm(id) {
             emailId = id;
-        }
-        function getEmail(id) {
-            emailId = id;
-            $.ajax({
-                type: 'POST',
-                url: '/CheckMail/',
-                // async: false,
-                data: {
-                    mailId: emailId,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    str=data.info['emailCont'];
-                    str=str.split("<br/>"); 
-                    if (data.status == 200) {
-                        $("#showEmailTo").text(data.info['toAddr'])
-                        $("#showEmailSubject").text(data.info['emailSubject'])
-                        $("#showEmailContext").text("")
-                        for(var i=0;i<str.length;i++) {
-                            var s=str[i]+"<br />";
-                            $("#showEmailContext").append(s);
-                        }
-                    }
-                }
-            })
         }
         $("#close").click(function () {
-            window.location.href = "/SentEmail";
+            window.location.href = "/DeledEmail";
         })
         $("#delEmail").click(function () {
             $.ajax({
                 type: 'POST',
-                url: '/SenderDeleEmail/',
+                url: '/CompleDelMail/',
                 // async: false,
                 data: {
                     mailId: emailId,
@@ -356,12 +326,30 @@
                 },
                 success: function (data) {
                     if (data.status == 200) {
-                        alert("删除成功");
-                        window.location.href = "/SentEmail";
+                        alert("彻底删除成功");
+                        window.location.href = "/DeledEmail";
                     }
                 }
             })
         })
+        $("#replyEmail").click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '/RecoverDeletedMail/',
+                // async: false,
+                data: {
+                    mailId: emailId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data.status == 200) {
+                        alert("恢复成功");
+                        window.location.href = "/DeledEmail";
+                    }
+                }
+            })
+        })
+
         $("#logout").click(function () {
             $.ajax({
                 type: 'GET',
@@ -371,7 +359,6 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 success: function (data) {
-                    alert(data.message);
                     if (data.status == 200) window.location.href = "/";
                 }
             })

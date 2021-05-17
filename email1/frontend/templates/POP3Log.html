@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
         <!-- Document title -->
-        <title>Tables &ndash; Data tables</title>
+        <title>POP3日志管理</title>
 
         <meta name="description" content="AppUI - Admin Dashboard Template & UI Framework" />
         <meta name="author" content="rustheme" />
@@ -95,33 +95,36 @@
                 <!-- Header -->
                 <header class="app-layout-header">
                     <nav class="navbar navbar-default">
-                                <!-- .navbar-left -->
-
-                                <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0)" data-toggle="dropdown">首页 </a>
-                                    </li>
-
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0)" data-toggle="dropdown">账户 <span class="caret"></span></a>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            <li>
-                                                <a tabindex="-1" href="javascript:void(0)"> 修改密码 </a>
-                                            </li>
-                                            <li>
-                                                <a tabindex="-1" href="javascript:void(0)"> 退出登录 </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="dropdown">
-                                        <a href="javascript:void(0)" data-toggle="dropdown">
-                                            <span class="m-r-sm dropdown">  </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <!-- .navbar-right -->
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <span class="navbar-page-title" id="userEmail">
+                                </span>
                             </div>
+                            <!-- .navbar-left -->
+                            <ul class="nav navbar-nav navbar-right navbar-toolbar hidden-sm hidden-xs">
+                                <li class="dropdown">
+                                    <a href="/Index">首页 </a>
+                                </li>
+    
+                                <li class="dropdown">
+                                    <a href="javascript:void(0)" data-toggle="dropdown">账户 <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a tabindex="-1" href="/ChangePass"> 修改密码 </a>
+                                        </li>
+                                        <li>
+                                            <a tabindex="-1" id="logout" href="javascript:;"> 退出登录 </a>
+                                        </li>
+                                    </ul>
+                                </li>
+    
+                                <li class="dropdown">
+                                    <a href="javascript:void(0)" data-toggle="dropdown">
+                                        <span class="m-r-sm dropdown"> </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- .navbar-right -->
                         </div>
                         <!-- .container-fluid -->
                     </nav>
@@ -296,6 +299,10 @@
                         if(data.authorityNo!=1){
                             alert("您无权访问此页面")
                             window.location.href="/Index";
+                        }
+                        if (data.status == 200) {
+                        var email = "<" + data.userName + "@skyfall.icu" + ">";
+                        $('#userEmail').text(email)
                         }
                     }
                 })

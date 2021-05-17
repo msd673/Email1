@@ -134,9 +134,11 @@ class Email(models.Model):
 
     sender_del_flag = models.BooleanField(default=0)
     sender_del_time = models.DateTimeField(blank=True, null=True)
+    sender_comdel_flag = models.BooleanField(default=0)
 
     rcver_del_flag = models.BooleanField(default=0)
     rcver_del_time = models.DateTimeField(blank=True, null=True)
+    rcver_comdel_flag = models.BooleanField(default=0)
 
     rcver_fr_flag = models.BooleanField(default=0)
     rcver_fr_time = models.DateTimeField(blank=True, null=True)
